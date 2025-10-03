@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
-// Routes
 const userRoutes = require("./routes/userRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const contactRoutes = require("./routes/contactRoutes");
@@ -13,17 +12,18 @@ const signupRoutes = require("./routes/signupRoutes");
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json());
+// ✅ CORS middleware sabse pehle
 app.use(
   cors({
-    origin: "https://doctor-app-indol.vercel.app", // ✅ last slash hata do
+    origin: "https://doctor-app-indol.vercel.app", // apna frontend domain
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
-// MongoDB Connection
+// ✅ JSON parser
+app.use(express.json());
+
 mongoose
   .connect(process.env.MONGO_URI || "mongodb+srv://tanzeel0680_db_user:babar@cluster0.sm3qfpx.mongodb.net/", {
     useNewUrlParser: true,
@@ -31,21 +31,20 @@ mongoose
   })
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
-
-// API Routes
+// ✅ Routes
 app.use("/api/users", userRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/contacts", contactRoutes);
-app.use("/api/news", newsRoutes);
 app.use("/api/login", loginRoutes);
+app.use("/api/news", newsRoutes);
 app.use("/api/signup", signupRoutes);
 
-// Root Endpoint
+// ✅ Default test route
 app.get("/", (req, res) => {
-  res.send("🚑 Doctor API is running...");
+  res.send("Doctor API is running...");
 });
 
-// Server Start
+// ✅ Server listen
 app.listen(PORT, () => {
-  console.log(`🚀 Server running at http://localhost:${PORT}`);
+  console.log(`🚀 Server running at port ${PORT}`);
 });
