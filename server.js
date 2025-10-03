@@ -10,8 +10,11 @@ const signupRoutes =require('./routes/signupRoutes')
 const app = express();
 const PORT = 5000;
 
-app.use(cors());
 app.use(express.json());
+
+app.use(cors({
+  origin: "https://doctor-app-indol.vercel.app/"
+}));
 
 mongoose
   .connect("mongodb+srv://tanzeel0680_db_user:babar@cluster0.sm3qfpx.mongodb.net/", {
